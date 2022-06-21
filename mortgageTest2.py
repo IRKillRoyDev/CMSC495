@@ -5,32 +5,29 @@ root.title('Test Mortgage Calculator')
 root.geometry("500x400")
 
 def payment():
-	if amount_entry.get() and interest_entry.get() and term_entry.get() and down_payment_entry.get():
-		# Convert Entry Boxes to numbers
-		years = int(term_entry.get())
-		months = years * 12
-		rate = float(interest_entry.get())
-		price = int(amount_entry.get())
-		down_payment = int(down_payment_entry.get())
-		loan = price - down_payment
-		# Calculate The Loan
-		# Monthly Interest Rate
-		monthly_rate = rate / 100 / 12
-		# Calculate Monthly Payments
-		payment = (monthly_rate / (1 - (1 + monthly_rate)**(-months))) * loan
-		# Format Outputs
-		loan = f"{loan:,.2f}"
-		payment = f"{payment:,.2f}"
+    if amount_entry.get() and interest_entry.get() and term_entry.get() and down_payment_entry.get():
+        # Convert Entry Boxes to numbers
+        years = int(term_entry.get())
+        months = years * 12
+        rate = float(interest_entry.get())
+        price = int(amount_entry.get())
+        down_payment = int(down_payment_entry.get())
+        loan = price - down_payment
+        # Calculate The Loan
+        # Monthly Interest Rate
+        monthly_rate = rate / 100 / 12
+        # Calculate Monthly Payments
+        payment = (monthly_rate / (1 - (1 + monthly_rate)**(-months))) * loan
+        # Format Outputs
+        loan = f"{loan:,.2f}"
+        payment = f"{payment:,.2f}"
 
-		# Output Loan Amount and Monthly Payment to the screen
-		loan_amount_label.config(text=f"Loan Amount: ${loan}")
-		payment_label.config(text=f"Monthly Payment: ${payment}")
+        # Output Loan Amount and Monthly Payment to the screen
+        loan_amount_label.config(text=f"Loan Amount: ${loan}")
+        payment_label.config(text=f"Monthly Payment: ${payment}")
 
-	else:
-		payment_label.config(text="Don't Leave Any Boxes Blank")
-
-
-
+    else:
+        payment_label.config(text="Don't Leave Any Boxes Blank")
 
 my_label_frame = LabelFrame(root, text="Enter Data Here")
 my_label_frame.pack(pady=30)
