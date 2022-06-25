@@ -5,7 +5,7 @@ root.title('Mortgage Calculator')
 root.geometry("500x400")
 
 
-# converts loan term from years to months
+# Converts Loan Term From Years to Months
 def loan_term_conversion():
 	if term_entry.get():
 		termYears = int(term_entry.get())
@@ -15,7 +15,7 @@ def loan_term_conversion():
 		payment_label.config(text="Please Don't Leave Any Boxes Blank")
 
 
-# converts overall interest rate into monthly interest rate
+# Converts Overall Interest Rate into Monthly Interest Rate
 def monthly_interest_rate():
 	if interest_entry.get():
 		interestRate = float(interest_entry.get())
@@ -25,7 +25,7 @@ def monthly_interest_rate():
 		payment_label.config(text="Please Don't Leave Any Boxes Blank")
 
 
-# calculates total amount of the loan
+# Calculates Total Amount of the Loan
 def loan_amount():
 	if amount_entry.get() and down_payment_entry.get():
 		houseCost = float(amount_entry.get())
@@ -36,15 +36,23 @@ def loan_amount():
 		payment_label.config(text="Please Don't Leave Any Boxes Blank")
 
 
-# calculates monthly payment
+# Calculates Monthly Payment
 def monthly_payment():
-	# local variables
+	# Import Results From Other Functions
 	termMonths = int(loan_term_conversion())
 	monthlyRate = float(monthly_interest_rate())
 	loanAmount = float(loan_amount())
 
 	# Calculate Monthly Payments
 	monthlyPayment = (monthlyRate / (1 - (1 + monthlyRate)**(-termMonths))) * loanAmount
+	return monthlyPayment
+
+
+# Displays Output
+def display():
+	# Import Results From monthly_payment() and loan_amount() functions
+	loanAmount = float(loan_amount())
+	monthlyPayment = float(monthly_payment())
 
 	# Format Outputs
 	loanAmount = f"{loanAmount:,.2f}"
@@ -55,6 +63,7 @@ def monthly_payment():
 	payment_label.config(text=f"Monthly Payment: ${monthlyPayment}")
 
 
+# Frame Creation
 my_label_frame = LabelFrame(root, text="Please Enter Data Here")
 my_label_frame.pack(pady=30)
 
@@ -87,8 +96,8 @@ term_entry.grid(row=2, column=1)
 down_payment_label.grid(row=3, column=0)
 down_payment_entry.grid(row=3, column=1, pady=5)
 
-# Button
-my_button = Button(my_label_frame, text="Calculate Loan Amount And Monthly Payment", command=monthly_payment)
+# Button Setup and Action
+my_button = Button(my_label_frame, text="Calculate Loan Amount And Monthly Payment", command=display)
 my_button.pack(pady=10)
 
 # Output Labels
