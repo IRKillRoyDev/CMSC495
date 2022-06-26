@@ -26,40 +26,41 @@ class HomeCompTool:
         root.columnconfigure(0, weight=1)
         root.rowconfigure(0, weight=1)
 
-        "Create the input for Square Feet"
+        #Create the input for Square Feet
         self.feet = StringVar()
         feet_entry = ttk.Entry(mainframe, width=7, textvariable=self.feet)
         feet_entry.grid(column=2, row=1, sticky=(W, E))
 
-        "Create the input for Number of Beds"
+        #Create the input for Number of Beds
         self.bed = StringVar()
         bed_entry = ttk.Entry(mainframe, width=7, textvariable=self.bed)
         bed_entry.grid(column=2, row=2, sticky=(W, E))
 
-        "Create the input for the Number of baths"
+        #Create the input for the Number of baths
         self.bath = StringVar()
         bath_entry = ttk.Entry(mainframe, width=7, textvariable=self.bath)
         bath_entry.grid(column=2, row=3, sticky=(W, E))
 
-        "Create the output of the number of homes falling within the range of User Params"
+        #Create the output of the number of homes falling within the range of User Params
         self.meters = StringVar()
         ttk.Label(mainframe, textvariable=self.meters).grid(column=2, row=4, sticky=(W, E))
 
-        "Create the Calculate button to execute the search"
-        ttk.Button(mainframe, text="Calculate", command=self.sort).grid(column=3, row=5, sticky=W)
+        #Create the Calculate button to execute the search
+        ttk.Button(mainframe, text="Filter", command=self.sort).grid(column=3, row=5, sticky=W)
+        ttk.Button(mainframe, text="List", command=self.sort).grid(column=2, row=5, sticky=W)
 
-        "Create the labels for the respective rows"
+        #Create the labels for the respective rows
         ttk.Label(mainframe, text="Square Feet").grid(column=3, row=1, sticky=W)
         ttk.Label(mainframe, text="Bedrooms").grid(column=3, row=2, sticky=W)
         ttk.Label(mainframe, text="Bathrooms").grid(column=3, row=3, sticky=W)
         ttk.Label(mainframe, text="Your Selection has").grid(column=1, row=4, sticky=E)
         ttk.Label(mainframe, text="Comps").grid(column=3, row=4, sticky=W)
 
-        "Create buffers using child so it's not repeated"
+        #Create buffers using child so it's not repeated
         for child in mainframe.winfo_children():
             child.grid_configure(padx=5, pady=5)
 
-        "Put the focus on the Calculate button so a user doesn't have to use the curser"
+        #Put the focus on the Calculate button so a user doesn't have to use the curser
         feet_entry.focus()
         root.bind("<Return>", self.sort)
 
