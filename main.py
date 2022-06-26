@@ -1,7 +1,6 @@
-import csv
+import pandas as pd
 from tkinter import *
 from tkinter import ttk
-from tkinter import filedialog
 class HomeCompTool:
     """Class Doc String Summary Here
     """
@@ -42,33 +41,26 @@ class HomeCompTool:
         ttk.Label(mainframe, textvariable=self.meters).grid(column=2, row=4, sticky=(W, E))
 
         #Create a frame inside the dialog window
-        #frame = ttk.Frame(mainframe, borderwidth=7, relief="ridge", width=400,height=300)
         frame = Text(mainframe,state='disabled',wrap='none')
         frame.grid()
 
         def write_to_log(msg):
-            """_summary_
+            """Writes the data to the frame inside the mainframe
 
             Args:
-                msg (_type_): _description_
+                msg (_type_): Input to be written into the frame
             """
-            numlines = int(frame.index('end - 1 line').split('.')[0])
             frame['state'] = 'normal'
-            #if numlines>30:
-                #frame.delete(0.0,'end')
             if frame.index('end-1c')!='1.0':
                 frame.insert('end', '\n')
             frame.insert('end', msg)
             frame['state'] = 'disabled'
 
         def list_home():
-            """_summary_
+            """_Pulls the data from the csv in a data frame that can be read easily
             """
-            with open('titles.csv', 'r') as homefile:
-                for line in csv.DictReader(homefile): # DictReader is a reader that returns a dictionary from the source.
-                    for key in line:
-                        write_to_log(key)
-                        write_to_log(line[key]) #Returns all the keys and values in the csv file.
+            hf = pd.read_csv('titles.csv')
+            write_to_log(hf)
 
         ys = ttk.Scrollbar(frame, orient='vertical',command=frame.yview)
         xs = ttk.Scrollbar(frame, orient='horizontal',command=frame.xview)
@@ -77,7 +69,7 @@ class HomeCompTool:
         frame.grid(column=0,row=0,sticky='nwes')
         xs.grid(column=0, row=1,sticky='we')
         ys.grid(column=1,row=0, columnspan=3,sticky='ns')
-        frame.grid_columnconfigure(0,weight=1,minsize=1000)
+        frame.grid_columnconfigure(0,weight=1,minsize=450)
         frame.grid_rowconfigure(0,weight=1,minsize=300)
 
         #Create the Calculate button to execute the search
