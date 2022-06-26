@@ -30,16 +30,19 @@ class HomeCompTool:
         self.feet = StringVar()
         feet_entry = ttk.Entry(mainframe, width=7, textvariable=self.feet)
         feet_entry.grid(column=2, row=1, sticky=(W, E))
+        feet_entry.insert(0,0)
 
         #Create the input for Number of Beds
         self.bed = StringVar()
         bed_entry = ttk.Entry(mainframe, width=7, textvariable=self.bed)
         bed_entry.grid(column=2, row=2, sticky=(W, E))
+        bed_entry.insert(0,0)
 
         #Create the input for the Number of baths
         self.bath = StringVar()
         bath_entry = ttk.Entry(mainframe, width=7, textvariable=self.bath)
         bath_entry.grid(column=2, row=3, sticky=(W, E))
+        bath_entry.insert(0,0)
 
         #Create the output of the number of homes falling within the range of User Params
         self.meters = StringVar()
@@ -67,9 +70,6 @@ class HomeCompTool:
     def sort(self, *args):
         """Get User Inputs and look for comps
         """
-        sqft = 0
-        baths = 0
-        beds = 0
         try:
             sqft = float(self.feet.get())
             baths = float(self.bath.get())
@@ -77,7 +77,6 @@ class HomeCompTool:
             self.meters.set(int(0.3048 * (sqft + baths + beds) * 10000.0 + 0.5)/10000.0)
         except ValueError:
             pass
-
 
 root = Tk()
 HomeCompTool(root)
