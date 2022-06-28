@@ -1,6 +1,17 @@
 import pandas as pd
 from tkinter import *
 from tkinter import ttk
+
+    """Revision History
+    May 28 - Added function to open CSV
+    20 Jun - Created the main function that pulls the data out of the CSV
+    25 Jun - Added a window for the Comp Tool
+    25 Jun - Added a 'List' button
+    25 Jun - Added an initial value to user inputs
+    25 Jun - Added function to list the house data
+    26 Jun - Used Pandas to format the house data in the 'list' of homes
+    27 Jun - Moved the functions to the top of the __init__.
+    """
 class HomeCompTool:
     """Class Doc String Summary Here
     """
