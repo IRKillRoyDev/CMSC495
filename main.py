@@ -4,12 +4,31 @@ from tkinter import ttk
 class HomeCompTool:
     """Class Doc String Summary Here
     """
+
     def __init__(self, root):
         """ The Home Comparison Tool takes user input and outputs comparative assessments.
 
         Args:
             root (_type_): _description_
         """
+
+        def write_to_log(msg):
+            """Writes the data to the frame inside the mainframe
+
+            Args:
+                msg (str): Input to be written into the frame
+            """
+            frame['state'] = 'normal'
+            if frame.index('end-1c')!='1.0':
+                frame.insert('end', '\n')
+            frame.insert('end', msg)
+            frame['state'] = 'disabled'
+
+        def list_home():
+            """_Pulls the data from the csv in a data frame that can be read easily
+            """
+            hf = pd.read_csv('titles.csv')
+            write_to_log(hf)
 
         root.title("House Comparative Assessment Tool")
 
@@ -43,24 +62,6 @@ class HomeCompTool:
         #Create a frame inside the dialog window
         frame = Text(mainframe,state='disabled',wrap='none')
         frame.grid()
-
-        def write_to_log(msg):
-            """Writes the data to the frame inside the mainframe
-
-            Args:
-                msg (_type_): Input to be written into the frame
-            """
-            frame['state'] = 'normal'
-            if frame.index('end-1c')!='1.0':
-                frame.insert('end', '\n')
-            frame.insert('end', msg)
-            frame['state'] = 'disabled'
-
-        def list_home():
-            """_Pulls the data from the csv in a data frame that can be read easily
-            """
-            hf = pd.read_csv('titles.csv')
-            write_to_log(hf)
 
         ys = ttk.Scrollbar(frame, orient='vertical',command=frame.yview)
         xs = ttk.Scrollbar(frame, orient='horizontal',command=frame.xview)
