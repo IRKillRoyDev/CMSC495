@@ -104,7 +104,7 @@ class HomeCompTool:
             sqft = float(self.feet.get())
             baths = float(self.bath.get())
             beds = float(self.bed.get())
-            self.meters.set(int(0.3048 * (sqft + baths + beds) * 10000.0 + 0.5)/10000.0)
+            self.meters.set(int(0.3048 * (sqft + baths + beds) * 10000.0 + 0.5)/10000.0) #Pending call to alogrithm
         except ValueError:
             pass
 
