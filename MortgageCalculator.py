@@ -7,6 +7,9 @@ from tkinter import *
     #25 JUN - Changed data types for user input based on ICD Document
     #26 JUN - Separated all calculations into different functions within program as per project analysis document
     #27 JUN - Placed display functionality into its own function as per project analysis document
+	#29 JUN - Added error checking and validation functionality to ensure user only enters integers or floats
+	#29 JUN - Created helper function to check whether user input is a float
+	#30 JUN - Added error checking and validation functionality to ensure user only enters positive integers or floats
     #"""
 
 root = Tk()
@@ -32,7 +35,7 @@ def loan_term_conversion():
 			return termMonths
 		else:
 			loan_amount_label.config(text="")
-			payment_label.config(text="Please Only Enter Positive Integers")
+			payment_label.config(text="Please Only Enter A Positive Number")
 	else:
 		loan_amount_label.config(text="")
 		payment_label.config(text="Please Don't Leave Any Boxes Blank")
@@ -43,8 +46,12 @@ def monthly_interest_rate():
 	if interest_entry.get():
 		if isfloat(interest_entry.get()):
 			interestRate = float(interest_entry.get())
-			monthlyRate = interestRate / 100 / 12
-			return monthlyRate
+			if interestRate >= 0:
+				monthlyRate = interestRate / 100 / 12
+				return monthlyRate
+			else:
+				loan_amount_label.config(text="")
+				payment_label.config(text="Please Only Enter A Positive Number")
 		else:
 			loan_amount_label.config(text="")
 			payment_label.config(text="Please Only Enter A Decimal Value")
@@ -59,8 +66,12 @@ def loan_amount():
 		if isfloat(amount_entry.get()) and isfloat(down_payment_entry.get()):
 			houseCost = float(amount_entry.get())
 			downPayment = float(down_payment_entry.get())
-			loanAmount = houseCost - downPayment
-			return loanAmount
+			if houseCost >= 0 and downPayment >= 0:
+				loanAmount = houseCost - downPayment
+				return loanAmount
+			else:
+				loan_amount_label.config(text="")
+				payment_label.config(text="Please Only Enter A Positive Number")
 		else:
 			loan_amount_label.config(text="")
 			payment_label.config(text="Please Only Enter A Decimal Value")
