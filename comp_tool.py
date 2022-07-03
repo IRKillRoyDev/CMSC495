@@ -1,26 +1,25 @@
-import pandas as pd
+"""Module Docstring"""
+
 from tkinter import *
 from tkinter import ttk
+import pandas as pd
 
 """Revision History
-May 28 - Added function to open CSV
-20 Jun - Created the main function that pulls the data out of the CSV
-25 Jun - Added a window for the Comp Tool
-25 Jun - Added a 'List' button
-25 Jun - Added an initial value to user inputs
-25 Jun - Added function to list the house data
-26 Jun - Used Pandas to format the house data in the 'list' of homes
-27 Jun - Moved the functions to the top of the __init__.
-"""
+    May 28 - Added function to open CSV
+    20 Jun - Created the main function that pulls the data out of the CSV
+    25 Jun - Added a window for the Comp Tool
+    25 Jun - Added a 'List' button
+    25 Jun - Added an initial value to user inputs
+    25 Jun - Added function to list the house data
+    26 Jun - Used Pandas to format the house data in the 'list' of homes
+    27 Jun - Moved the functions to the top of the __init__.
+    """
 class HomeCompTool:
     """Class Doc String Summary Here
     """
 
     def __init__(self, root):
         """ The Home Comparison Tool takes user input and outputs comparative assessments.
-
-        Args:
-            root (_type_): _description_
         """
 
         def write_to_log(msg):
@@ -38,8 +37,8 @@ class HomeCompTool:
         def list_home():
             """_Pulls the data from the csv in a data frame that can be read easily
             """
-            hf = pd.read_csv('titles.csv')
-            write_to_log(hf)
+            home_file = pd.read_csv('titles.csv')
+            write_to_log(home_file)
 
         root.title("House Comparative Assessment Tool")
 
@@ -74,13 +73,13 @@ class HomeCompTool:
         frame = Text(mainframe,state='disabled',wrap='none')
         frame.grid()
 
-        ys = ttk.Scrollbar(frame, orient='vertical',command=frame.yview)
-        xs = ttk.Scrollbar(frame, orient='horizontal',command=frame.xview)
-        frame['yscrollcommand'] = ys.set
-        frame['xscrollcommand'] = xs.set
+        y_scroll = ttk.Scrollbar(frame, orient='vertical',command=frame.yview)
+        x_scroll = ttk.Scrollbar(frame, orient='horizontal',command=frame.xview)
+        frame['yscrollcommand'] = y_scroll.set
+        frame['xscrollcommand'] = x_scroll.set
         frame.grid(column=0,row=0,sticky='nwes')
-        xs.grid(column=0, row=1,sticky='we')
-        ys.grid(column=1,row=0, columnspan=3,sticky='ns')
+        x_scroll.grid(column=0, row=1,sticky='we')
+        y_scroll.grid(column=1,row=0, columnspan=3,sticky='ns')
         frame.grid_columnconfigure(0,weight=1,minsize=450)
         frame.grid_rowconfigure(0,weight=1,minsize=300)
 
@@ -115,7 +114,8 @@ class HomeCompTool:
             sqft = float(self.feet.get())
             baths = float(self.bath.get())
             beds = float(self.bed.get())
-            self.meters.set(int(0.3048 * (sqft + baths + beds) * 10000.0 + 0.5)/10000.0) #Pending call to alogrithm
+            #Pending call to alogrithm
+            self.meters.set(int(0.3048 * (sqft + baths + beds) * 10000.0 + 0.5)/10000.0)
         except ValueError:
             pass
 
