@@ -37,7 +37,8 @@ class HomeCompTool:
         def list_home():
             """_Pulls the data from the csv in a data frame that can be read easily
             """
-            home_file = pd.read_csv('titles.csv')
+            df = pd.read_csv('titles.csv')
+            home_file = df[['Location','Size','Bedroom','Bath','Price','Date of Sale']].set_index('Location')
             write_to_log(home_file)
 
         root.title("House Comparative Assessment Tool")
