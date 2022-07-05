@@ -10,20 +10,12 @@ from tkinter import *
 	#29 JUN - Added error checking and validation functionality to ensure user only enters integers or floats
 	#29 JUN - Created helper function to check whether user input is a float
 	#30 JUN - Added error checking and validation functionality to ensure user only enters positive integers or floats
+    #4 JUL - Cleaned up functions to make code easier to read
     #"""
 
 root = Tk()
 root.title('Mortgage Calculator')
 root.geometry("500x400")
-
-
-# Checks Whether A Value Is A Float
-def isfloat(num):
-    try:
-        float(num)
-        return True
-    except ValueError:
-        return False
 
 
 # Converts Loan Term From Years to Months
@@ -92,7 +84,7 @@ def monthly_payment():
 	return monthlyPayment
 
 
-# Displays Output
+# Displays Loan Amount and Monthly Payment Amount on Screen
 def display():
 	# Import Results From monthly_payment() and loan_amount() functions
 	loanAmount = float(loan_amount())
@@ -102,9 +94,17 @@ def display():
 	loanAmount = f"{loanAmount:,.2f}"
 	monthlyPayment = f"{monthlyPayment:,.2f}"
 
-	# Output Loan Amount and Monthly Payment to the screen
 	loan_amount_label.config(text=f"Loan Amount: ${loanAmount}")
 	payment_label.config(text=f"Monthly Payment: ${monthlyPayment}")
+
+
+# Checks Whether A Value Is A Float
+def isfloat(num):
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False
 
 
 # Frame Creation
@@ -127,7 +127,7 @@ term_entry = Entry(my_frame, font=("Helvetica", 18))
 down_payment_label = Label(my_frame, text="Down Payment Amount")
 down_payment_entry = Entry(my_frame, font=("Helvetica", 18))
 
-# Put Labels and Entry Boxes on the Screen
+# Place Labels and Entry Boxes on the Screen
 amount_label.grid(row=0, column=0)
 amount_entry.grid(row=0, column=1)
 
