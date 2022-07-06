@@ -3,6 +3,7 @@
 from tkinter import *
 from tkinter import ttk
 import pandas as pd
+import numpy as np
 
 """Revision History
     May 28 - Added function to open CSV
@@ -13,14 +14,20 @@ import pandas as pd
     25 Jun - Added function to list the house data
     26 Jun - Used Pandas to format the house data in the 'list' of homes
     27 Jun - Moved the functions to the top of the __init__.
+    3 Jul - Updated the synthetic data to have approx 3000 entries of randomized numbers
+    4 Jul - finished adding the filter alogrithm to sort the data
     """
 class HomeCompTool:
     """Class Doc String Summary Here
     """
+    data = pd.read_csv('titles.csv')
+    df = pd.DataFrame(data).set_index('Location')
+    #filtered_values = df.query(sqft_str + ' & ' + baths_str + ' & ' + beds_str)
 
     def __init__(self, root):
         """ The Home Comparison Tool takes user input and outputs comparative assessments.
         """
+        self.root = root
 
         def write_to_log(msg):
             """Writes the data to the frame inside the mainframe
@@ -37,16 +44,42 @@ class HomeCompTool:
         def list_home():
             """_Pulls the data from the csv in a data frame that can be read easily
             """
-            df = pd.read_csv('titles.csv')
-            home_file = df[['Location','Size','Bedroom','Bath','Price','Date of Sale']].set_index('Location')
-            write_to_log(home_file)
+            data = pd.read_csv('titles.csv')
+            df = pd.DataFrame(data).set_index('Location')
+            write_to_log(df)
 
-        root.title("House Comparative Assessment Tool")
+        def sort(*args):
+            """Get User Inputs and look for comps
+            """
+            data = pd.read_csv('titles.csv')
+            df = pd.DataFrame(data).set_index('Location')
+            try:
+                sqft = float(self.feet.get())
+                baths = float(self.bath.get())
+                beds = float(self.bed.get())
+                #Pending call to alogrithm
+                high_sqft = sqft + 50
+                low_sqft = sqft - 50
+                sqft_str = str(low_sqft)+ ' <= Size <= '+ str(high_sqft)
+                high_baths = baths + 1
+                low_baths = baths - 1
+                baths_str = str(low_baths)+ ' <= Bath <= '+ str(high_baths)
+                high_beds = beds + 1
+                low_beds = beds - 1
+                beds_str = str(low_beds)+' <= Bedroom <= '+ str(high_beds)
 
-        mainframe = ttk.Frame(root, padding="3 3 12 12")
+                filtered_values = df.query(sqft_str + ' & ' + baths_str + ' & ' + beds_str)
+                self.comps.set(filtered_values['Price'].mean())
+                write_to_log(filtered_values)
+            except ValueError:
+                pass
+
+        self.root.title("House Comparative Assessment Tool")
+
+        mainframe = ttk.Frame(self.root, padding="3 3 12 12")
         mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-        root.columnconfigure(0, weight=1)
-        root.rowconfigure(0, weight=1)
+        self.root.columnconfigure(0, weight=1)
+        self.root.rowconfigure(0, weight=1)
 
         #Create the input for Square Feet
         self.feet = StringVar()
@@ -67,8 +100,8 @@ class HomeCompTool:
         bath_entry.insert(0,0)
 
         #Create the output of the number of homes falling within the range of User Params
-        self.meters = StringVar()
-        ttk.Label(mainframe, textvariable=self.meters).grid(column=2, row=4, sticky=(W, E))
+        self.comps = StringVar()
+        ttk.Label(mainframe, textvariable=self.comps).grid(column=2, row=4, sticky=(W, E))
 
         #Create a frame inside the dialog window
         frame = Text(mainframe,state='disabled',wrap='none')
@@ -85,15 +118,14 @@ class HomeCompTool:
         frame.grid_rowconfigure(0,weight=1,minsize=300)
 
         #Create the Calculate button to execute the search
-        filter_button = ttk.Button(mainframe, text="Filter", command=self.sort)
+        filter_button = ttk.Button(mainframe, text="Filter", command=sort)
         list_button = ttk.Button(mainframe, text="List", command=list_home)
 
         #Create the labels for the respective rows
         ttk.Label(mainframe, text="Square Feet").grid(column=3, row=1, sticky=W)
         ttk.Label(mainframe, text="Bedrooms").grid(column=3, row=2, sticky=W)
         ttk.Label(mainframe, text="Bathrooms").grid(column=3, row=3, sticky=W)
-        ttk.Label(mainframe, text="Your Selection has").grid(column=1, row=4, sticky=E)
-        ttk.Label(mainframe, text="Comps").grid(column=3, row=4, sticky=W)
+        ttk.Label(mainframe, text="Your comparative assesment is").grid(column=1, row=4, sticky=E)
         filter_button.grid(column=3, row=5, sticky=W)
         list_button.grid(column=2, row=5, sticky=W)
         frame.grid(column=1, row=6, columnspan= 3, sticky=W)
@@ -104,21 +136,7 @@ class HomeCompTool:
 
         #Put the focus on the Calculate button so a user doesn't have to use the curser
         feet_entry.focus()
-        root.bind("<Return>", self.sort)
-
-
-
-    def sort(self, *args):
-        """Get User Inputs and look for comps
-        """
-        try:
-            sqft = float(self.feet.get())
-            baths = float(self.bath.get())
-            beds = float(self.bed.get())
-            #Pending call to alogrithm
-            self.meters.set(int(0.3048 * (sqft + baths + beds) * 10000.0 + 0.5)/10000.0)
-        except ValueError:
-            pass
+        self.root.bind("<Return>", sort)
 
 root = Tk()
 HomeCompTool(root)
