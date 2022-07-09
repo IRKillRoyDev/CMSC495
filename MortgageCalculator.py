@@ -1,18 +1,5 @@
 from tkinter import *
 
-    #"""Revision History
-    #2 JUN - Created test mortgage calculator program to determine formulas for all calculations
-    #16 JUN - Created dummy main program to call mortgage calculator from to test functionality
-    #25 JUN - Created clean mortgage calculator program based on test program written earlier
-    #25 JUN - Changed data types for user input based on ICD Document
-    #26 JUN - Separated all calculations into different functions within program as per project analysis document
-    #27 JUN - Placed display functionality into its own function as per project analysis document
-	#29 JUN - Added error checking and validation functionality to ensure user only enters integers or floats
-	#29 JUN - Created helper function to check whether user input is a float
-	#30 JUN - Added error checking and validation functionality to ensure user only enters positive integers or floats
-    #4 JUL - Cleaned up functions to make code easier to read
-    #"""
-
 root = Tk()
 root.title('Mortgage Calculator')
 root.geometry("500x400")
