@@ -4,71 +4,60 @@ root = Tk()
 root.title('Mortgage Calculator')
 root.geometry("500x400")
 
+def validate_inputs():
+    if not all([amount_entry.get(), down_payment_entry.get(), interest_entry.get(), term_entry.get()]):
+        payment_label.config(text="Please Don't Leave Any Boxes Blank")
+        return False
+    if not (isfloat(amount_entry.get()) and isfloat(down_payment_entry.get()) and isfloat(interest_entry.get()) and term_entry.get().isdigit()):
+        payment_label.config(text="Please Enter Valid Numbers")
+        return False
+    if float(amount_entry.get()) < 0 or float(down_payment_entry.get()) < 0 or float(interest_entry.get()) < 0 or int(term_entry.get()) < 0:
+        payment_label.config(text="Please Only Enter Positive Numbers")
+        return False
+    return True
 
 # Converts Loan Term From Years to Months
-def loan_term_conversion():
-	if term_entry.get():
-		if term_entry.get().isdigit():
-			termYears = int(term_entry.get())
-			termMonths = termYears * 12
-			return termMonths
-		else:
-			loan_amount_label.config(text="")
-			payment_label.config(text="Please Only Enter A Positive Number")
-	else:
-		loan_amount_label.config(text="")
-		payment_label.config(text="Please Don't Leave Any Boxes Blank")
-
+def loan_term_conversion(term_entry, payment_label, amount_entry, down_payment_entry, interest_entry):
+    if not validate_inputs(amount_entry, down_payment_entry, interest_entry, term_entry, payment_label):
+        return None #Return None if the validation fails (error message set by validate_inputs)
+    termYears = int(term_entry.get())
+    termMonths = termYears * 12
+    return termMonths
 
 # Converts Overall Interest Rate into Monthly Interest Rate
-def monthly_interest_rate():
-	if interest_entry.get():
-		if isfloat(interest_entry.get()):
-			interestRate = float(interest_entry.get())
-			if interestRate >= 0:
-				monthlyRate = interestRate / 100 / 12
-				return monthlyRate
-			else:
-				loan_amount_label.config(text="")
-				payment_label.config(text="Please Only Enter A Positive Number")
-		else:
-			loan_amount_label.config(text="")
-			payment_label.config(text="Please Only Enter A Decimal Value")
-	else:
-		loan_amount_label.config(text="")
-		payment_label.config(text="Please Don't Leave Any Boxes Blank")
-
+def monthly_interest_rate(term_entry, payment_label, amount_entry, down_payment_entry, interest_entry):
+    if not validate_inputs(term_entry, payment_label, amount_entry, down_payment_entry, interest_entry):
+        return None #Return None if the validation fails (error message set by validate_inputs)
+    interestRate = float(interest_entry.get())
+		if interestRate >= 0:
+			monthlyRate = interestRate / 100 / 12
+			return monthlyRate
 
 # Calculates Total Amount of the Loan
-def loan_amount():
-	if amount_entry.get() and down_payment_entry.get():
-		if isfloat(amount_entry.get()) and isfloat(down_payment_entry.get()):
-			houseCost = float(amount_entry.get())
-			downPayment = float(down_payment_entry.get())
-			if houseCost >= 0 and downPayment >= 0:
-				loanAmount = houseCost - downPayment
-				return loanAmount
-			else:
-				loan_amount_label.config(text="")
-				payment_label.config(text="Please Only Enter A Positive Number")
-		else:
-			loan_amount_label.config(text="")
-			payment_label.config(text="Please Only Enter A Decimal Value")
-	else:
-		loan_amount_label.config(text="")
-		payment_label.config(text="Please Don't Leave Any Boxes Blank")
-
+def loan_amount(term_entry, payment_label, amount_entry, down_payment_entry, interest_entry):
+    if not validate_inputs(term_entry, payment_label, amount_entry, down_payment_entry, interest_entry):
+        return None #Return None if the validation fails (error message set by validate_inputs)
+    houseCost = float(amount_entry.get())
+	downPayment = float(down_payment_entry.get())
+	loanAmount = houseCost - DownPayment
+	if loanAmount < 0: #makes sure user did not put in a greater number for downpayment than the loan
+    	payment_Label.config(text="Down Payment cannot exceed House Price")
+    	return None
+	return loanAmount
 
 # Calculates Monthly Payment
 def monthly_payment():
 	# Import Results From Other Functions
-	termMonths = int(loan_term_conversion())
-	monthlyRate = float(monthly_interest_rate())
-	loanAmount = float(loan_amount())
-
-	# Calculate Monthly Payments
-	monthlyPayment = (monthlyRate / (1 - (1 + monthlyRate)**(-termMonths))) * loanAmount
-	return monthlyPayment
+	try:
+		termMonths = int(loan_term_conversion())
+		monthlyRate = float(monthly_interest_rate())
+		loanAmount = float(loan_amount())
+		# Calculate Monthly Payments
+		monthlyPayment = (monthlyRate / (1 - (1 + monthlyRate)**(-termMonths))) * loanAmount
+		return monthlyPayment
+	EXCEPT (ValueError, TypeError):
+     payment_label.config(text="Invalid input. Please check all fields.")
+     return 0
 
 
 # Displays Loan Amount and Monthly Payment Amount on Screen
